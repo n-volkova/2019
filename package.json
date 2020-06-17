@@ -1,0 +1,29 @@
+{
+    "name": "2019",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint",
+        "start": "vue-cli-service serve"
+    },
+    "dependencies": {
+        "matter-js": "^0.14.2",
+        "node-gyp": "^5.0.7",
+        "v-odometer": "^2.0.1",
+        "vue": "^2.6.10",
+        "vue-fullpage.js": "^0.1.4",
+        "vuex": "^3.1.1"
+    },
+    "devDependencies": {
+        "@vue/cli-service": "^3.11.0",
+        "node-sass": "^4.12.0",
+        "sass-loader": "^7.3.1",
+        "vue-template-compiler": "^2.6.10"
+    },
+  
+    "browserslist": [
+        "> 1%",
+        "last 2 versions"
+    ]
+}
