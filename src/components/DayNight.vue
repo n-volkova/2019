@@ -47,11 +47,7 @@ export default {
     },
     computed: {
         nightPercentage() {
-            if (!window.IS_CLIENT) {
-                return Math.round(window.RESULTS.time_transactions['18:00 - 05:59'].percent)
-            } else {
-                return Math.round(window.RESULTS.time_transactions['18:00-05:59'])
-            }
+            return Math.round(this.$root.results.time_transactions['18:00 - 05:59'])
         },
         dayPercentage() {
             return Math.round(100 - this.nightPercentage)

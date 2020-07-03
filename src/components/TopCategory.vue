@@ -74,7 +74,7 @@ export default {
     },
     computed: {
         topCat() {
-            return Object.keys(window.RESULTS.popular_category)[0]
+            return Object.keys(this.$root.results.popular_category)[0]
         },
     },
     methods: {

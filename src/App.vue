@@ -1,24 +1,36 @@
 <template>
     <div id="app">
-        <!-- <router-view /> -->
-        <client-page></client-page>
+        <transition name="fade" mode="out-in">
+            <component 
+                :is="current"
+                @loginSuccess="onLoginSuccess"
+            />
+        </transition>
     </div>
 </template>
 
 <script>
-    // function randomInteger(min, max) {
-    //     let rand = min - 0.5 + Math.random() * (max - min + 1)
-    //     return Math.round(rand)
-    // }
 
-    // window.SHARE_ID = randomInteger(1, 7)
-    import ClientPage from './views/Client'
-    export default {
-        name: 'App',
-        components: {
-            'client-page': ClientPage
+import Intro from './components/Intro.vue'
+import Total from './components/Total.vue'
+
+export default {
+    name: 'App',
+    components: {
+        Intro, Total
+    },
+    data () {
+        return {
+            current: 'intro'
         }
+    },
+    methods: {
+        onLoginSuccess() {
+            this.current = 'total'
+        },
     }
+}
+
 </script>
 
 <style lang="scss">
@@ -26,6 +38,7 @@
 @import '/styles/fonts.scss';
 @import '/styles/main.scss';
 @import '/styles/animations.scss';
+@import '/styles/odometer.scss';
 
 #app {
     position: relative;
@@ -51,11 +64,5 @@
 .rouble-sign {
     font-family: pragmatica-extended;
     font-weight: 300;
-}
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .1s ease;
-}
-.fade-enter, .fade-leave-to {
-    opacity: 0;
 }
 </style>

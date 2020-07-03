@@ -13,7 +13,7 @@
 
 const WIDTH = window.innerWidth
 const HEIGHT = window.innerHeight
-var RATIO
+let RATIO
 
 if (WIDTH > 880) {
     RATIO = 1
@@ -26,14 +26,9 @@ if (WIDTH > 880) {
 const HEART = require('../assets/heart.png')
 const HEART_SMALL = require('../assets/heart-small.png')
 
-import { Engine, Render, World, Bodies, Body, Composite, Events } from "matter-js"
+import { Engine, Render, World, Bodies, Body, Composite, Events } from 'matter-js'
 
 export default {
-    props: {
-        isMobile: {
-            type: Boolean
-        },
-    },
     data () {
         return {
             cashbackVisible: false,
@@ -41,7 +36,7 @@ export default {
     },
     computed: {
         cashback() {
-            return this.formatNumber(window.RESULTS.favorite_places_cashback)
+            return this.formatNumber(this.$root.results.favorite_places_cashback)
         },
     },
     methods: {
@@ -49,9 +44,9 @@ export default {
             return new Intl.NumberFormat('ru-RU').format(Math.round(number))
         },
         dropHeart(canvas) {
-            var engine = Engine.create()
+            const engine = Engine.create()
 
-            var render = Render.create({
+            const render = Render.create({
                 canvas: document.body.querySelector(canvas),
                 engine: engine,
                 options: {
@@ -62,7 +57,7 @@ export default {
                 }
             });
 
-            let heart = Bodies.rectangle(WIDTH / 2, -108, 127, 108, {
+            const heart = Bodies.rectangle(WIDTH / 2, -108, 127, 108, {
                 id: 'heart',
                 collisionFilter: {
                     category: 0x0001
@@ -97,7 +92,7 @@ export default {
                 )
             }
 
-            let ground = Bodies.rectangle(WIDTH / 2, HEIGHT - 25, WIDTH, 50, { 
+            const ground = Bodies.rectangle(WIDTH / 2, HEIGHT - 25, WIDTH, 50, { 
                 id: 'ground',
                 collisionFilter: {
                     mask: 0x0001
@@ -106,7 +101,7 @@ export default {
                 render: { opacity: 0 } 
             })
 
-            let ceiling = Bodies.rectangle(WIDTH / 2, 25, WIDTH, 50, { 
+            const ceiling = Bodies.rectangle(WIDTH / 2, 25, WIDTH, 50, { 
                 collisionFilter: {
                     mask: 0x0002
                 },
@@ -130,11 +125,11 @@ export default {
 
                 //ground
                 ground
-            ]);
+            ])
 
             let self = this
 
-            Events.on(engine, "collisionStart", function(event) {
+            Events.on(engine, 'collisionStart', function(event) {
                 let id = event.pairs.slice()[0].id
 
                 if (id === 'AgroundBheart') {

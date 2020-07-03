@@ -1,28 +1,27 @@
 <template>
-    <div v-if="!codeSent" class="intro">
-        <full-page v-show="loaded" ref="fullpageIntro" id="fullpageIntro" :skip-init="true" :options="options">
+    <div class="intro">
+        <full-page ref="fullpageIntro" id="fullpageIntro" :options="options" :class="faded && 'faded'">
             <div class="section">
-                <svg width="100%" height="100%" viewBox="0 0 1200 720" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                <svg class="rocket-arrow" width="100%" height="100%" viewBox="0 0 1200 720" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel">
                         <g transform="translate(-20.000000, -20.000000)" stroke="#FFFFFF" stroke-width="15">
                             <polyline id="Path-3" points="30 30 1217 380 30 730"></polyline>
                         </g>
                     </g>
                 </svg>
+
                 <canvas v-if="!droppedCompletely" id="introCanvas" />
 
                 <div class="chevron-down" @click="scrollDown" ></div>
             </div>
             <div class="section drop-further-section" id="dropFurther">
                 <div class="logo white">Рокетбанк</div>
-                <canvas v-if="!stampedeVisible" id="dropFurtherCanvas" />
+                <canvas v-show="droppedCompletely" id="dropFurtherCanvas" />
                 <div class="text" v-html="introText"></div>
                 <div class="spacer"></div>
 
-                <transition name="fade" mode="out-in">
-                    <div v-if="!stampedeVisible && !codeSent" class="start-btn" @click="onCodeSent">Узнать</div>
-                    <!-- <stampede v-else @codeSent="onCodeSent($event)" /> -->
-                </transition>
+                <div class="start-btn" @click="getData">Узнать</div>
 
                 <footer>
                     <p>КИВИ Банк (АО), <a href="https://qiwi.com/" target="_blank">qiwi.com</a>, лицензия Банка России № 2241 от 22.01.2015 филиал Рокетбанк.</p>
@@ -36,7 +35,7 @@
 
 const WIDTH = window.innerWidth
 const HEIGHT = window.innerHeight
-var RATIO
+let RATIO
 
 if (WIDTH > 880) {
     RATIO = 1
@@ -49,33 +48,22 @@ if (WIDTH > 880) {
 const STAR = require('../assets/star.png')
 const CIRCLE = require('../assets/circle.png')
 const RECT = require('../assets/rect.png')
-const COMMON_RESULTS = require('../assets/commonResults.json')
 
-import { Engine, Render, World, Bodies } from "matter-js"
+import { Engine, Render, World, Bodies } from 'matter-js'
 
 export default {
     name: 'Intro',
-    components: {
-    },
     data () {
         return {
-            popupVisible: false,
             current: 'intro',
             droppedCompletely: false,
-            stampedeVisible: false,
-            codeSent: false,
-            loaded: false,
             introText: 'Грядёт конец 2019 года, самое время узнать, как он прошёл у вас',
-            stampedeText: 'Введите номер своего мобильного в форму ниже, и мы расскажем про этот год в цифрах и картинках',
             options: {
-                licenseKey: '6E8F5101-0A6A4218-AEC61F0C-EF812275',
-                css3: true,
                 afterLoad: this.afterLoad,
                 onLeave: this.onLeave,
-                lazyLoading: false,
-                scrollingSpeed: 1000,
                 sectionsColor: ['#E6343A', '#E6343A']
             },
+            faded: false
         }
     },
     computed: {
@@ -84,30 +72,15 @@ export default {
         },
     },  
     mounted() {
-        let refs = this.$refs
-        let self = this
-        window.onload = function() {
-
-            let fullpageEnabled = document.documentElement.classList.contains('fp-enabled')
-
-            if (!fullpageEnabled) {
-                refs.fullpageIntro.init()
-            } else {
-                document.documentElement.classList.remove('fp-enabled')
-                refs.fullpageIntro.destroy('all')
-                refs.fullpageIntro.init()
-            }
-            self.loaded = true
-
-            self.dropIntroTitle('#introCanvas')
-        }
+        this.dropIntroTitle('#introCanvas')
     },
     methods: {
         dropIntroTitle(canvas) {
-            var engine = Engine.create();
-            let startBtn = document.querySelector('.start-btn')
+            const engine = Engine.create()
 
-            var render = Render.create({
+            const startBtn = document.querySelector('.start-btn')
+
+            const render = Render.create({
                 canvas: document.body.querySelector(canvas),
                 engine: engine,
                 options: {
@@ -116,9 +89,9 @@ export default {
                     background: 'transparent',
                     wireframes: false
                 }
-            });
+            })
 
-            this.star = Bodies.circle(266 * RATIO, -266 * RATIO, 266 * RATIO, {
+            const star = Bodies.circle(266 * RATIO, -266 * RATIO, 266 * RATIO, {
                 render: {
                     sprite: {
                         texture: STAR,
@@ -128,7 +101,7 @@ export default {
                 }
             })
 
-            this.circle = Bodies.circle(WIDTH / 2, -150 * RATIO, 150 * RATIO, {
+            const circle = Bodies.circle(WIDTH / 2, -150 * RATIO, 150 * RATIO, {
                 render: {
                     sprite: {
                         texture: CIRCLE,
@@ -138,7 +111,7 @@ export default {
                 }
             })
 
-            this.rect = Bodies.rectangle(WIDTH - 311 * RATIO, -181 * RATIO, 622 * RATIO, 181 * RATIO, {
+            const rect = Bodies.rectangle(WIDTH - 311 * RATIO, -181 * RATIO, 622 * RATIO, 181 * RATIO, {
                 angle: .78,
                 render: {
                     sprite: {
@@ -149,7 +122,7 @@ export default {
                 }
             })
 
-            var ground
+            let ground
 
             if (canvas === '#introCanvas') {
                 ground = Bodies.rectangle(WIDTH / 2, HEIGHT + 25, WIDTH, 50, { 
@@ -163,7 +136,7 @@ export default {
                 })
             }
 
-            World.add(engine.world, [this.star, this.circle, this.rect,
+            World.add(engine.world, [star, circle, rect,
 
                 // left wall
                 Bodies.rectangle(-30, HEIGHT / 2, 50, HEIGHT, { 
@@ -179,29 +152,18 @@ export default {
 
                 //ground
                 ground
-            ]);
-            Engine.run(engine);
-            Render.run(render);
-        },
+            ])
 
-        showPopup() {
-            this.popupVisible = true
-            this.disableScrolling()
-        },
-
-        hidePopup() {
-            this.popupVisible = false
-            this.enableScrolling()
+            Engine.run(engine)
+            Render.run(render)
         },
 
         afterLoad(section, origin, destination) {
             this.current = origin.item.getAttribute('id')
 
             if (this.current === 'dropFurther' && !this.droppedCompletely) {
-                setTimeout(() => {
-                    this.dropIntroTitle('#dropFurtherCanvas')
-                    this.droppedCompletely = true
-                }, 700)
+                this.dropIntroTitle('#dropFurtherCanvas')
+                this.droppedCompletely = true
             }
         },
 
@@ -221,82 +183,19 @@ export default {
             this.$refs.fullpageIntro.api.setAllowScrolling(false)
         },
 
-        showStampede() {
-            this.stampedeVisible = true
-            this.introText = this.stampedeText
-
-
-            // setTimeout(() => {
-                // this.codeSent = true
-
-            //     setTimeout(() => {
-            //         window.RESULTS = { 
-            //             "days_transactions":{ 
-            //                 "1.0":"13.58",
-            //                 "2.0":"12.08",
-            //                 "3.0":"13.51",
-            //                 "4.0":"14.65",
-            //                 "5.0":"10.29",
-            //                 "6.0":"12.98",
-            //                 "7.0":"22.91"
-            //             },
-            //             "time_transactions":{ 
-            //                 "18:00 - 05:59":"42.91",
-            //                 "6:00 - 17:59":"57.09"
-            //             },
-            //             "favorite_places_cashback":911,
-            //             "cashback_sum":5008,
-            //             "balance_percents_in_rub":685,
-            //             "popular_category":{ 
-            //                 "Рестораны и кафе":"12.0%"
-            //             },
-            //             "invited_friends":0
-            //         }
-            //         window.IS_CLIENT = true
-            //         this.$emit('loginSuccess')
-            //     }, 0)
-            // }, 2000)
-
-
-
-            // this.codeSent = true
-
-            // setTimeout(() => {
-            //     window.IS_CLIENT = false
-            //     this.$emit('notClient')
-            // }, 2000)
-
-        },
-
-        onCodeSent(res) {
-            this.stampedeVisible = false
-            if (!res.client) {
-                window.SIGNUP_URL = res.signupUrl
-                window.IS_CLIENT = false
-
-                this.$emit('notClient')
-            } else {
-                window.IS_CLIENT = true
-                this.codeSent = true
-                this.getData(res.token)
-            }
-        },
-
-        async getData(token) {
-            const url = `https://mw.rocketbank.ru/api/v1/ny_stats/${token}`
-
+        async getData() {
             await this.$http({
-                url: url,
+                url: './json/results.json',
                 method: 'GET'
+
             }).then(res => {
+                this.$root.results = Object.assign({}, this.$root.results, res.data)
+                this.faded = true
                 setTimeout(() => {
-                    window.RESULTS = res.data
                     this.$emit('loginSuccess')
-                }, 0)
+                }, 200)
             })
             .catch(error => {
-                window.NO_DATA = true
-                window.IS_CLIENT = false
                 this.$emit('noData')
             })
         },
@@ -304,9 +203,10 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
     .intro {
+        min-height: 100vh;
+        position: relative;
         .chevron-down {
             position: absolute;
             width: 44px;
@@ -322,7 +222,14 @@ export default {
             cursor: pointer;
         }
     }
-    #introCanvas, #dropFurtherCanvas {
+    #fullpageIntro {
+        transition: opacity .2s ease;
+        &.faded {
+            opacity: 0;
+        }
+    }
+    #introCanvas, 
+    #dropFurtherCanvas {
         position: absolute;
         top: 0;
         left: 0;
@@ -356,113 +263,6 @@ export default {
                 margin-top: 80px;
                 font-size: 28px;
                 line-height: 1.15;
-            }
-        }
-
-        .stampede-wrapper {
-            width: unset;
-            padding-top: 0;
-            padding-bottom: 0;
-            margin-left: -20px;
-            margin-right: -20px;
-            .input-container input {
-                // -webkit-box-align: center;
-                // -webkit-align-items: center;
-            }
-            .input-container, 
-            .code {
-                // -webkit-align-items: center;
-                // -webkit-box-align: center;
-                width: 100%;
-                border-radius: 90.5px;
-                font-weight: 400;
-                overflow: hidden;
-                box-shadow: none;
-
-                @media (min-width: 1200px) {
-                    height: 150px;
-                    padding-left: 50px;
-                    font-size: 75px;
-                    line-height: 150px;
-                    border: 5px solid #000000;
-                    margin-bottom: 0;
-                }
-                @media (min-width: 768px) and (max-width: 1199px) {
-                    height: 150px;
-                    padding-left: 30px;
-                    font-size: 47px;
-                    line-height: 150px;
-                    border: 5px solid #000000;
-                    margin-bottom: 0;
-                }
-                @media (min-width: 401px) and (max-width: 767px) {
-                    height: 80px;
-                    padding-left: 7px;
-                    font-size: 25px;
-                    line-height: 80px;
-                    border: 2px solid #000000;
-                }
-                @media (max-width: 400px) {
-                    height: 50px;
-                    font-size: 20px;
-                    line-height: 50px;
-                    padding-left: 7px;
-                    border: 2px solid #000000;
-                }
-            }
-            .code {
-                padding-left: 20px;
-            }
-            .spring-spinner {
-                margin: 0 auto;
-                @media (max-width: 400px) {
-                    display: none;
-                }
-            }
-            button {
-                border-radius: 90.5px;
-                font-weight: 400;
-                z-index: 1;
-                box-shadow: none;
-                // -webkit-justify-content: center;
-                // -webkit-box-pack: center;
-
-                @media (min-width: 1200px) {
-                    position: absolute;
-                    right: 0;
-                    width: auto;
-                    min-width: unset;
-                    display: inline-block;
-                    width: 300px;
-                    height: 150px;
-                    font-size: 75px;
-                    line-height: 150px;
-                    border: 5px solid #000000;
-                }
-                @media (min-width: 768px) and (max-width: 1199px) {
-                    position: absolute;
-                    right: 0;
-                    width: auto;
-                    min-width: unset;
-                    display: inline-block;
-                    width: 200px;
-                    height: 150px;
-                    font-size: 47px;
-                    line-height: 150px;
-                    border: 5px solid #000000;
-                }
-                @media (min-width: 401px) and (max-width: 767px) {
-                    height: 80px;
-                    font-size: 36px;
-                    line-height: 80px;
-                    border: 2px solid #000000;
-                }
-                @media (max-width: 400px) {
-                    height: 50px;
-                    font-size: 20px;
-                    line-height: 50px;
-                    border: 2px solid #000000;
-                }
             }
         }
     }

@@ -4,7 +4,7 @@
 
         <div class="flex-horizontal">
             <slot name="scramble"></slot>
-            <div class="share-img" :class="`share-${shareId}`"></div>
+            <div class="share-img" :class="`share-3`"></div>
         </div>
 
         <div class="social">
@@ -17,26 +17,14 @@
 
 <script>
 export default {
-    props: {
-        isMobile: {
-            type: Boolean
-        },
-    },
     data () {
         return {
             animated: false
         }
     },
     computed: {
-        shareId() {
-            // let path = this.$route.path.match(/\/[1-7]/g)           
-            // let shareId = path[0].replace(/\//g, '')
-            // return shareId
-            return 3
-        },
-
         inviteUrl() {
-            return window.location.href
+            return 'https://n-martynova.github.io/2019/'
         },
 
         fbLink() {
@@ -71,8 +59,12 @@ export default {
 <style lang="scss">
     .share-section {
         .text {
+            @media (min-width: 1200px) {
+                width: 50%;
+            }
             @media (min-width: 767px) and (max-width: 1199px) {
                 font-size: 45px;
+                width: 50%;
             }
             @media (min-width: 401px) and (max-width: 767px) {
                 font-size: 23px;

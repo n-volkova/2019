@@ -8,11 +8,13 @@
         "start": "vue-cli-service serve"
     },
     "dependencies": {
+        "axios": "^0.19.2",
         "matter-js": "^0.14.2",
         "node-gyp": "^5.0.7",
         "v-odometer": "^2.0.1",
         "vue": "^2.6.10",
         "vue-fullpage.js": "^0.1.4",
+        "vue-scramble-text": "^1.0.1",
         "vuex": "^3.1.1"
     },
     "devDependencies": {
@@ -21,7 +23,6 @@
         "sass-loader": "^7.3.1",
         "vue-template-compiler": "^2.6.10"
     },
-  
     "browserslist": [
         "> 1%",
         "last 2 versions"

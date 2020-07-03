@@ -30,14 +30,6 @@
 
 <script>
 export default {
-    props: {
-        isMobile: {
-            type: Boolean
-        },
-        current: {
-            type: String
-        }
-    },
     data () {
         return {
             weekdays: []
@@ -47,8 +39,8 @@ export default {
         chartPercents() {
             let percents = []
 
-            for (let weekday in window.RESULTS.days_transactions) {
-                percents.push(Math.round(+window.RESULTS.days_transactions[weekday]))
+            for (let weekday in this.$root.results.days_transactions) {
+                percents.push(Math.round(+this.$root.results.days_transactions[weekday]))
             }
 
             let biggest = Math.max(...percents)
@@ -101,7 +93,6 @@ export default {
         transition: height .3s linear;
         border: 1px solid rgba(0, 0, 0, .2);
         color: #000;
-        // overflow: hidden;
         
         @media (min-width: 768px) {
             padding-left: 20px;

@@ -9,11 +9,6 @@
 
 <script>
 export default {
-    props: {
-        isMobile: {
-            type: Boolean
-        },
-    },
     computed: {
         isClient() {
             return window.IS_CLIENT

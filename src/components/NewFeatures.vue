@@ -20,11 +20,6 @@
 
 <script>
 export default {
-    props: {
-        isMobile: {
-            type: Boolean
-        },
-    },
 }
 </script>
 

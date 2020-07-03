@@ -11,20 +11,14 @@
             <div class="smiley" :class="[animated ? 'animated' : '', zeroFriends ? 'sad' : '']"></div>
         </div>
 
-        <div v-if="isClient" class="bottom-text text" key="text">Представьте, сколько сможете пригласить в следующем!</div>
+        <div class="bottom-text text" key="text">Представьте, сколько сможете пригласить в следующем!</div>
 
-        <a v-if="isClient || noData" class="big-button" :href="inviteUrl" target="_blank">Пригласить друзей</a>
-        <a v-else-if="!isClient" class="big-button" :href="signupUrl" target="_blank">Заказать карту</a>
+        <a class="big-button" :href="inviteUrl" target="_blank">Пригласить друзей</a>
     </div>
 </template>
 
 <script>
 export default {
-    props: {
-        isMobile: {
-            type: Boolean
-        },
-    },
     data () {
         return {
             animationCompleted: false,
@@ -33,23 +27,11 @@ export default {
     },
     computed: {
         inviteUrl() {
-            return window.RESULTS.invite_link
-        },
-
-        signupUrl() {
-            return window.SIGNUP_URL
-        },
-
-        isClient() {
-            return window.IS_CLIENT
-        },
-
-        noData() {
-            return window.NO_DATA
+            return this.$root.results.invite_link
         },
 
         friendsCount() {
-            return this.formatNumber(window.RESULTS.invited_friends)
+            return this.formatNumber(this.$root.results.invited_friends)
         },
 
         zeroFriends() {
@@ -85,7 +67,6 @@ export default {
             .smileys-group {
                 flex-grow: 1;
                 max-height: 230px;                
-                // min-height: 150px;                
                 width: 100%;
                 margin-top: 20px;
                 margin-bottom: 20px;
@@ -183,7 +164,7 @@ export default {
             transform: translateX(-100%) rotate(-360deg); 
         }
         100% { 
-            transform: translateX(calc(100vw - 25px - 100%)) rotate(0deg); 
+            transform: translateX(calc(100vw - 50px - 100%)) rotate(0deg); 
         }
     }
     .friends-count {

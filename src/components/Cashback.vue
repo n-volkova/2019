@@ -17,23 +17,18 @@
 
         <div class="spacer"></div>
 
-        <div v-if="isClient" class="text bottom-text">В следующем году может быть больше, если пользоваться нашим новым разделом <a href="https://cashback.rocketbank.ru" target="_blank">«Больше кешбэка»</a>. О том, как тратить рокетрубли, можно прочитать <a href="https://rocketbank.ru/rocketrubles" target="_blank">тут</a></div>
+        <div class="text bottom-text">В следующем году может быть больше, если пользоваться нашим новым разделом <a href="https://cashback.rocketbank.ru" target="_blank">«Больше кешбэка»</a>. О том, как тратить рокетрубли, можно прочитать <a href="https://rocketbank.ru/rocketrubles" target="_blank">тут</a></div>
     </div>
 </template>
 
 <script>
 
 import VueOdometer from 'v-odometer/src'
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
 
 export default {
     components: {
         VueOdometer
-    },
-    props: {
-        isMobile: {
-            type: Boolean
-        },
     },
     data () {
         return {
@@ -41,21 +36,15 @@ export default {
             digitElements: null,
         }
     },
-    computed: {
-
-        isClient() {
-            return window.IS_CLIENT
-        },
-    },
     methods: {
         animate() {
             this.reset()
             setTimeout(() => {
-                this.cashback = window.RESULTS.cashback_sum + ''
+                this.cashback = this.$root.results.cashback_sum + ''
             }, 0)
         },
         reset() {
-            this.cashback = (window.RESULTS.cashback_sum + '').replace(/\d/g, '0')
+            this.cashback = (this.$root.results.cashback_sum + '').replace(/\d/g, '0')
         }
     }
 }

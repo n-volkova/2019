@@ -12,11 +12,6 @@
 <script>
 import decl from '@/utils/decl'
 export default {
-    props: {
-        isMobile: {
-            type: Boolean
-        },
-    },
     data () {
         return {
             price: 50,
@@ -24,15 +19,8 @@ export default {
         }
     },
     computed: {
-        count() {
-            return Math.round(window.RESULTS.balance_percents_in_rub / this.price)
-        },
         text() {
-            if (window.IS_CLIENT) {
-                return this.formatNumber(window.RESULTS.balance_percents_in_rub) + '&nbsp;<span class="rouble-sign">₽</span>'
-            } else {
-                return this.formatNumber(this.count) + '&nbsp;' + decl(this.count, ['сырок','сырка','сырков'])
-            }
+            return this.formatNumber(this.$root.results.balance_percents_in_rub) + '&nbsp;<span class="rouble-sign">₽</span>'
         },
     },
     methods: {
