@@ -8,7 +8,7 @@
         "start": "vue-cli-service serve"
     },
     "dependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "matter-js": "^0.14.2",
         "node-gyp": "^5.0.7",
         "v-odometer": "^2.0.1",
