@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import 'fullpage.js/vendors/scrolloverflow'
+import 'fullpage.js/vendors/scrolloverflow.js'
 import 'fullpage.js/dist/fullpage.css'
 import VueFullPage from 'vue-fullpage.js'
 import axios from 'axios'
