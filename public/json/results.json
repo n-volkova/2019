@@ -1,0 +1,22 @@
+{ 
+    "days_transactions": { 
+        "1.0": "13.58",
+        "2.0": "12.08",
+        "3.0": "13.51",
+        "4.0": "14.65",
+        "5.0": "10.29",
+        "6.0": "12.98",
+        "7.0": "22.91"
+    },
+    "time_transactions": { 
+        "18:00 - 05:59": "42.91",
+        "6:00 - 17:59": "57.09"
+    },
+    "favorite_places_cashback": 911,
+    "cashback_sum": 5008,
+    "balance_percents_in_rub": 685,
+    "popular_category": { 
+        "Рестораны и кафе": "12.0%"
+    },
+    "invited_friends": 0
+}

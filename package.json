@@ -1,0 +1,32 @@
+{
+	"name": "2019",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"build": "vue-cli-service build",
+		"lint": "vue-cli-service lint",
+		"dev": "vue-cli-service serve",
+		"start": "vue-cli-service serve"
+	},
+	"dependencies": {
+		"axios": "^1.6.1",
+		"matter-js": "^0.19.0",
+		"v-odometer": "^2.0.1",
+		"vue": "^2.6.10",
+    "vue-fullpage.js": "^0.1.4"
+	},
+	"devDependencies": {
+		"@rushstack/eslint-patch": "^1.5.1",
+		"@vue/cli-service": "^5.0.8",
+		"eslint": "^8.53.0",
+		"eslint-plugin-vue": "^9.18.1",
+		"jsonc-eslint-parser": "^2.4.0",
+		"sass": "^1.69.5",
+		"sass-loader": "^13.3.2",
+		"vue-template-compiler": "^2.7.15"
+	},
+	"browserslist": [
+		"> 1%",
+		"last 2 versions"
+	]
+}
